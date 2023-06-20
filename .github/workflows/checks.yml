@@ -25,20 +25,29 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v3
+
       - name: Install poetry
         run: pipx install poetry
-      - uses: actions/setup-python@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        id: setup-python
         with:
           python-version: '3.11.3'
-          cache: 'poetry'
-          cache-dependency-path: |
-            ~/.cache/pypoetry/poetry.lock
-      - run: poetry install
+          cache-dependency-path: pyproject.toml
+          cache: poetry
+
+      - name: Install deps
+        if: steps.setup-python.outputs.cache-hit != 'true'
+        run: poetry install
+
       - name: Run flake8
         run: poetry run flake8 --config ./config.flake8
+
       - name: Run mypy
         run: poetry run mypy
-      - name: Run tests        
+
+      - name: Run tests
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
