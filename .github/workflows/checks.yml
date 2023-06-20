@@ -31,6 +31,8 @@ jobs:
         with:
           python-version: '3.11.3'
           cache: 'poetry'
+          cache-dependency-path: |
+            ~/.cache/pypoetry/poetry.lock
       - run: poetry install
       - name: Run flake8
         run: poetry run flake8 --config ./config.flake8
