@@ -2,9 +2,9 @@ name: Код дискор бота чеееееееееееееееееееее�
 
 on:
   push:
-    branches: [main]
+    branches: [ main, test ]
   pull_request:
-    branches: [main]
+    branches: [ main, test ]
 
 jobs:
   build:
